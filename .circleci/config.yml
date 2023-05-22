@@ -16,3 +16,8 @@ jobs:
           command: |
             pip install -r requirements.txt
             conan create . _/_ -sbuild_type=Release -oshared=True
+            
+workflows:
+  build:
+    jobs:
+      - build_macos
