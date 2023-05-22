@@ -25,4 +25,4 @@ jobs:
       - name: Build
         run: conan create . _/_ --build=missing -sbuild_type=Release -oshared=True
       - name: Upload
-        run: conan upload node/18.16.0 --all -r conan --retry 3 --retry-wait 10
+        run: conan upload node/18.16.0 --all -r conan --retry 3 --retry-wait 10 --confirm
