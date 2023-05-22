@@ -9,7 +9,6 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     env:
-      CONAN_CMAKE_GENERATOR: ninja
       CONAN_REVISIONS_ENABLED: 1
     strategy:
       matrix:
