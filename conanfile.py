@@ -86,24 +86,24 @@ class LibNodeConan(ConanFile):
         else:
             self.copy("*.h", dst="include/node", src="src")
             self.copy("*.h", dst="include", src="deps/v8/include/")
-            self.copy("libnode.lib", src="out/{0}/obj.target/".format(self.settings.build_type), dst="lib",
+            self.copy("libnode.lib", src="out/{}".format(self.settings.build_type), dst="lib",
                       keep_path=False
                       )
             self.copy(
-                "libnode.a", src="out/{0}/obj.target/".format(self.settings.build_type), dst="lib", keep_path=False
+                "libnode.a", src="out/{}".format(self.settings.build_type), dst="lib", keep_path=False
             )
 
             if self.options.shared:
                 self.copy(
                     "libnode.so*",
-                    src="out/{0}/obj.target/".format(self.settings.build_type),
+                    src="out/{}".format(self.settings.build_type),
                     dst="lib",
                     keep_path=False,
                     symlinks=True,
                 )
                 self.copy(
-                    "libnode.dylib*",
-                    src="out/{0}/obj.target/".format(self.settings.build_type),
+                    "*.dylib",
+                    src="out/{}".format(self.settings.build_type),
                     dst="lib",
                     keep_path=False,
                     symlinks=True,
@@ -113,4 +113,4 @@ class LibNodeConan(ConanFile):
         if self.settings.os == "Windows":
             self.cpp_info.libs = ["node", "v8_libplatform"]
         else:
-            self.cpp_info.libs = ["node", "v8_libplatform"]
+            self.cpp_info.libs = ["node"]
