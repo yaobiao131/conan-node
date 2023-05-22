@@ -1,0 +1,5 @@
+sources:
+  "20.2.0":
+    url: "https://github.com/nodejs/node/archive/refs/tags/v20.2.0.tar.gz"
+  "18.16.0":
+    url: "https://github.com/nodejs/node/archive/refs/tags/v18.16.0.tar.gz"
