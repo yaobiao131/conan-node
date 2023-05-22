@@ -10,11 +10,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ macos-latest ]
+        os: [ macos-11 ]
     steps:
       - name: Check out Git repositorygit
         uses: actions/checkout@v1
-      - name: Setup Conan
-        uses: conan-io/setup-conan@v1
+      - name: Install Dependency
+        run: pip3 install -r requirements.txt
       - name: Build
         run: conan create . _/_ --build=missing -sbuild_type=Release -oshared=True
