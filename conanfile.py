@@ -24,6 +24,10 @@ class LibNodeConan(ConanFile):
         "icu:shared": True,
     }
 
+    def requirements(self):
+        if self.settings.os != "Windows":
+            self.requires("ninja/1.11.1")
+
     def source(self):
         get(self, **self.conan_data["sources"][self.version], strip_root=True)
 
@@ -55,7 +59,10 @@ class LibNodeConan(ConanFile):
                 "--without-npm",
                 "--without-intl",
                 "--without-corepack",
-                "--without-node-options"
+                "--without-node-options",
+                "--without-ssl",
+                "--without-node-snapshot",
+                "--ninja"
             ]
 
             if self.options.fPIC:
