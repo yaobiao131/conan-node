@@ -17,12 +17,12 @@ jobs:
     steps:
       - name: Check out Git repositorygit
         uses: actions/checkout@v1
+      - name: Install Dependency
+        run: pip3 install -r requirements.txt
       - name: Setup Conan Remote
         run: |
           conan remote add conan https://conan.bzdrs.cn/artifactory/api/conan/conan
           conan user -p ${{ secrets.CONAN_SECRET }} -r conan admin
-      - name: Install Dependency
-        run: pip3 install -r requirements.txt
       - name: Build
         run: conan create . _/_ --build=missing -sbuild_type=Release -oshared=True
       - name: Upload
