@@ -1,0 +1,20 @@
+name: Build nodejs library
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ macos-latest ]
+    steps:
+      - name: Check out Git repositorygit
+        uses: actions/checkout@v1
+      - name: Setup Conan
+        uses: conan-io/setup-conan@v1
+      - name: Build
+        run: conan create . _/_ --build=missing -sbuild_type=Release -oshared=True
