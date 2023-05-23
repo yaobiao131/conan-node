@@ -1,6 +1,6 @@
 import os
 
-from conan.tools.files import get
+from conan.tools.files import get, rm
 from conans import ConanFile, AutoToolsBuildEnvironment
 
 
@@ -20,8 +20,7 @@ class LibNodeConan(ConanFile):
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {
         "shared": False,
-        "fPIC": True,
-        "icu:shared": True,
+        "fPIC": True
     }
 
     def requirements(self):
@@ -93,28 +92,27 @@ class LibNodeConan(ConanFile):
         else:
             self.copy("*.h", dst="include/node", src="src")
             self.copy("*.h", dst="include", src="deps/v8/include/")
-            self.copy("libnode.lib", src="out/{}".format(self.settings.build_type), dst="lib",
-                      keep_path=False
-                      )
-            self.copy(
-                "libnode.a", src="out/{}".format(self.settings.build_type), dst="lib", keep_path=False
-            )
+            rm(self, "*.TOC", "out/{}/lib".format(self.settings.build_type))
 
             if self.options.shared:
-                self.copy(
-                    "libnode.so*",
-                    src="out/{}".format(self.settings.build_type),
-                    dst="lib",
-                    keep_path=False,
-                    symlinks=True,
-                )
-                self.copy(
-                    "*.dylib",
-                    src="out/{}".format(self.settings.build_type),
-                    dst="lib",
-                    keep_path=False,
-                    symlinks=True,
-                )
+                if self.settings.os == "Macos":
+                    self.copy(
+                        "*.dylib",
+                        src="out/{}".format(self.settings.build_type),
+                        dst="lib",
+                        keep_path=False,
+                        symlinks=True,
+                    )
+                    self.run("ln -sf libnode*.dylib libnode.dylib", cwd=os.path.join(self.package_folder, "lib"))
+                if self.settings.os == "Linux":
+                    self.copy(
+                        "libnode.so*",
+                        src="out/{}/lib".format(self.settings.build_type),
+                        dst="lib",
+                        keep_path=False,
+                        symlinks=True,
+                    )
+                    self.run("ln -sf libnode.so* libnode.so", cwd=os.path.join(self.package_folder, "lib"))
 
     def package_info(self):
         if self.settings.os == "Windows":
