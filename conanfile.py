@@ -39,6 +39,7 @@ class LibNodeConan(ConanFile):
                 "without-intl",
                 "no-shared-roheap",
                 "no-NODE-OPTIONS",
+                "openssl-no-asm"
             ]
 
             if self.settings.build_type == "Debug":
