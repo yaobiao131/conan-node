@@ -68,6 +68,8 @@ class LibNodeConan(ConanFile):
                 cflags.append("-fPIC")
             if self.options.shared:
                 args.append("--shared")
+            if self.settings.build_type == "Debug":
+                args.append("--debug")
 
             cflags.append("-fvisibility=default")
 
