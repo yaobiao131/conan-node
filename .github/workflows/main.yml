@@ -12,7 +12,7 @@ jobs:
       CONAN_REVISIONS_ENABLED: 1
     strategy:
       matrix:
-        os: [ macos-latest, windows-latest, debian-latest ]
+        os: [ macos-latest, windows-latest, ubuntu-latest ]
     steps:
       - name: Check out Git repositorygit
         uses: actions/checkout@v1
