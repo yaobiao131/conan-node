@@ -1,6 +1,6 @@
 import os
 
-from conan.tools.files import get, rm
+from conan.tools.files import get, rm, export_conandata_patches, apply_conandata_patches
 from conans import ConanFile, AutoToolsBuildEnvironment
 
 
@@ -27,11 +27,15 @@ class LibNodeConan(ConanFile):
         if self.settings.os != "Windows":
             self.requires("ninja/1.11.1")
 
+    def export_sources(self):
+        export_conandata_patches(self)
+
     def source(self):
         get(self, **self.conan_data["sources"][self.version], strip_root=True)
 
     def build(self):
         if self.settings.os == "Windows":
+            apply_conandata_patches(self)
             args = [
                 "nonpm",
                 "nocorepack",
@@ -39,7 +43,7 @@ class LibNodeConan(ConanFile):
                 "without-intl",
                 "no-shared-roheap",
                 "no-NODE-OPTIONS",
-                "openssl-no-asm"
+                "no-ssl"
             ]
 
             if self.settings.build_type == "Debug":
