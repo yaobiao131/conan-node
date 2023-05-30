@@ -123,6 +123,6 @@ class LibNodeConan(ConanFile):
 
     def package_info(self):
         if self.settings.os == "Windows":
-            self.cpp_info.libs = ["node", "v8_libplatform"]
+            self.cpp_info.libs = ["libnode", "v8_libplatform"]
         else:
             self.cpp_info.libs = ["node"]
