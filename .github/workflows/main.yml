@@ -12,7 +12,7 @@ jobs:
       CONAN_REVISIONS_ENABLED: 1
     strategy:
       matrix:
-        os: [ macos-latest, windows-latest ]
+        os: [ macos-latest, windows-latest, debian-latest ]
     steps:
       - name: Check out Git repositorygit
         uses: actions/checkout@v1
@@ -22,11 +22,10 @@ jobs:
         run: |
           conan remote add conan https://conan.mzec.top/artifactory/api/conan/conan
           conan user -p ${{ secrets.CONAN_SECRET }} -r conan admin
-#      - name: Build Debug
-#        run: conan create . _/_ --build=missing -sbuild_type=Debug -oshared=True
-#      - name: Upload Debug
-#        run: conan upload node/18.16.0 --all -r conan --retry 3 --retry-wait 10 --confirm
+      - name: Build Debug
+        run: conan create . _/_ --build=missing -sbuild_type=Debug -oshared=True
+        if: matrix.os != 'debian-latest'
       - name: Build Release
         run: conan create . _/_ --build=missing -sbuild_type=Release -oshared=True
-      - name: Upload Release
+      - name: Upload
         run: conan upload node/18.16.0 --all -r conan --retry 3 --retry-wait 10 --confirm
