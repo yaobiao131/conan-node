@@ -20,10 +20,6 @@ jobs:
         run: pip3 install -r requirements.txt
       - name: Setup Conan Remote
         run: |
-          conan profile new default --detect
-          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-            conan profile update settings.compiler.libcxx=libstdc++11 default
-          fi
           conan remote add conan https://conan.mzec.top/artifactory/api/conan/conan
           conan user -p ${{ secrets.CONAN_SECRET }} -r conan admin
       - name: Init Conan Profile
