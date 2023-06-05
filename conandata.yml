@@ -1,8 +1,8 @@
 sources:
   "20.2.0":
-    url: "https://github.com/nodejs/node/archive/refs/tags/v20.2.0.tar.gz"
+    url: "https://chinanet.mirrors.ustc.edu.cn/node/v20.2.0/node-v20.2.0.tar.gz"
   "18.16.0":
-    url: "https://github.com/nodejs/node/archive/refs/tags/v18.16.0.tar.gz"
+    url: "https://chinanet.mirrors.ustc.edu.cn/node/v18.16.0/node-v18.16.0.tar.gz"
 patches:
   "18.16.0":
     - patch_file: "patches/001-add-no-ssl-to-vcbuild.pacth"
