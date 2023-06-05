@@ -14,7 +14,7 @@ jobs:
       - name: Check out Git repositorygit
         uses: actions/checkout@v1
       - name: Install Dependency
-        run: pip3 install -r requirements.txt
+        run: pip3 install -r requirements.txt -i https://mirrors.cernet.edu.cn/pypi/web/simple
       - name: Setup Conan Remote
         run: |
           conan remote add conan https://conan.bzdrs.cn/artifactory/api/conan/conan
