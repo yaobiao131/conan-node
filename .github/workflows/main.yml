@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-self-hosted:
-    run-on: self-hosted
+    runs-on: self-hosted
     env:
       CONAN_REVISIONS_ENABLED: 1
     steps:
