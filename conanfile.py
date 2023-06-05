@@ -23,10 +23,6 @@ class LibNodeConan(ConanFile):
         "fPIC": True
     }
 
-    def requirements(self):
-        if self.settings.os != "Windows":
-            self.requires("ninja/1.11.1")
-
     def export_sources(self):
         export_conandata_patches(self)
 
@@ -65,8 +61,7 @@ class LibNodeConan(ConanFile):
                 "--without-corepack",
                 "--without-node-options",
                 "--without-ssl",
-                "--without-node-snapshot",
-                "--ninja"
+                "--without-node-snapshot"
             ]
 
             if self.options.fPIC:
@@ -90,35 +85,16 @@ class LibNodeConan(ConanFile):
 
     def package(self):
         if self.settings.os == "Windows":
-            self.copy("*.h", dst="include", src="deps/v8/include/")
-            self.copy("*.h", dst="include/node", src="src")
-            self.copy("libnode.dll", dst="bin", src="out/{}".format(self.settings.build_type), keep_path=False)
-            self.copy("libnode.lib", dst="lib", src="out/{}".format(self.settings.build_type), keep_path=False)
-            self.copy("v8_libplatform.lib", dst="lib", src="out/{}/lib".format(self.settings.build_type),
-                      keep_path=False)
+            self.run("python3 tools/install.py install {0} ./".format(self.package_folder))
+            rm(self, "node.exe", os.path.join(self.package_folder, "bin"))
         else:
-            self.copy("*.h", dst="include/node", src="src")
-            self.copy("*.h", dst="include", src="deps/v8/include/")
-            rm(self, "*.TOC", "out/{}/lib".format(self.settings.build_type))
-
+            autotools = AutoToolsBuildEnvironment(self)
+            autotools.install()
+            rm(self, "node", os.path.join(self.package_folder, "bin"))
             if self.options.shared:
                 if self.settings.os == "Macos":
-                    self.copy(
-                        "*.dylib",
-                        src="out/{}".format(self.settings.build_type),
-                        dst="lib",
-                        keep_path=False,
-                        symlinks=True,
-                    )
                     self.run("ln -sf libnode*.dylib libnode.dylib", cwd=os.path.join(self.package_folder, "lib"))
-                if self.settings.os == "Linux":
-                    self.copy(
-                        "libnode.so*",
-                        src="out/{}/lib".format(self.settings.build_type),
-                        dst="lib",
-                        keep_path=False,
-                        symlinks=True,
-                    )
+                elif self.settings.os == "Linux":
                     self.run("ln -sf libnode.so* libnode.so", cwd=os.path.join(self.package_folder, "lib"))
 
     def package_info(self):
