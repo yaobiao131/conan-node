@@ -80,7 +80,7 @@ class LibNodeConan(ConanFile):
                 "CXXFLAGS": cflags_str,
             }
 
-            autotools.configure(args=args, vars=build_vars)
+            autotools.configure(args=args, vars=build_vars, use_default_install_dirs=False)
             autotools.make(vars=build_vars)
 
     def package(self):
