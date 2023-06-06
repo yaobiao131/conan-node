@@ -85,7 +85,7 @@ class LibNodeConan(ConanFile):
 
     def package(self):
         self.run(
-            "python3 tools/install.py install {0} ./ {1}".format(self.package_folder, self.settings.build_type))
+            "python3 tools/install.py install {0} /. {1}".format(self.package_folder, self.settings.build_type))
         if self.settings.os == "Windows":
             rm(self, "node.exe", os.path.join(self.package_folder, "bin"))
         else:
