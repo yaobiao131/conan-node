@@ -84,12 +84,11 @@ class LibNodeConan(ConanFile):
             autotools.make(vars=build_vars)
 
     def package(self):
+        self.run(
+            "python3 tools/install.py install {0} ./ {1}".format(self.package_folder, self.settings.build_type))
         if self.settings.os == "Windows":
-            self.run("python3 tools/install.py install {0} ./".format(self.package_folder))
             rm(self, "node.exe", os.path.join(self.package_folder, "bin"))
         else:
-            autotools = AutoToolsBuildEnvironment(self)
-            autotools.install()
             rm(self, "node", os.path.join(self.package_folder, "bin"))
             if self.options.shared:
                 if self.settings.os == "Macos":
